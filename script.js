@@ -1,8 +1,8 @@
 let currentIndex = 0;
-let frameCount = 0;
+let playing = false;
 
-function postToPhotopea(jsx) {
-  window.parent.postMessage(jsx, "*");
+function postToPhotopea(code) {
+  window.parent.postMessage(code, "*");
 }
 
 function addFrame() {
@@ -11,70 +11,59 @@ function addFrame() {
     var layer = doc.artLayers.add();
     layer.name = "Frame_" + doc.artLayers.length;
     doc.activeLayer = layer;
-    doc.selection.selectAll(); doc.selection.clear();
   `;
-  frameCount++;
-  renderTimeline();
   postToPhotopea(jsx);
 }
 
 function duplicateFrame() {
   const jsx = `
-    var dup = app.activeDocument.activeLayer.duplicate();
-    dup.name = "Frame_Dup";
+    var doc = app.activeDocument;
+    doc.activeLayer.duplicate();
   `;
-  frameCount++;
-  renderTimeline();
   postToPhotopea(jsx);
 }
 
-function applyOnionSkin() {
+function prevFrame() {
   const jsx = `
     var doc = app.activeDocument;
-    var layers = doc.artLayers;
-    var active = doc.activeLayer;
-    var index = -1;
-    for (var i = 0; i < layers.length; i++) {
-      if (layers[i] == active) { index = i; break; }
-    }
-    for (var j = 0; j < layers.length; j++) {
-      if (j === index - 1 || j === index + 1) {
-        layers[j].opacity = 30;
-      } else if (j !== index) {
-        layers[j].opacity = 100;
-      }
-    }
+    var idx = doc.artLayers.getByName(doc.activeLayer.name).itemIndex;
+    if (idx > 0) doc.activeLayer = doc.artLayers[idx - 1];
   `;
   postToPhotopea(jsx);
 }
 
-function renderTimeline() {
-  const container = document.getElementById("timeline");
-  container.innerHTML = "";
-  for (let i = 0; i < frameCount; i++) {
-    const div = document.createElement("div");
-    div.className = "frame-box" + (i === currentIndex ? " active" : "");
-    div.textContent = "Frame " + (i + 1);
-    div.onclick = () => {
-      currentIndex = i;
-      selectFrame(i);
-      renderTimeline();
-    };
-    container.appendChild(div);
-  }
-}
-
-function selectFrame(index) {
+function nextFrame() {
   const jsx = `
     var doc = app.activeDocument;
-    var layers = doc.artLayers;
-    for (var i = 0; i < layers.length; i++) {
-      layers[i].visible = false;
-    }
-    if (layers[${index}]) {
-      layers[${index}].visible = true;
-      doc.activeLayer = layers[${index}];
+    var idx = doc.artLayers.getByName(doc.activeLayer.name).itemIndex;
+    if (idx < doc.artLayers.length - 1) doc.activeLayer = doc.artLayers[idx + 1];
+  `;
+  postToPhotopea(jsx);
+}
+
+function toggleOnionSkin() {
+  const jsx = `
+    var doc = app.activeDocument;
+    for (var i = 0; i < doc.artLayers.length; i++) {
+      var layer = doc.artLayers[i];
+      layer.opacity = (layer.opacity === 100) ? 20 : 100;
     }
   `;
   postToPhotopea(jsx);
+}
+
+function playAnimation() {
+  if (playing) return;
+  playing = true;
+  const jsx = `
+    var doc = app.activeDocument;
+    for (var i = 0; i < doc.artLayers.length; i++) {
+      doc.artLayers[i].visible = false;
+    }
+    doc.artLayers[0].visible = true;
+  `;
+  postToPhotopea(jsx);
+  setTimeout(() => {
+    playing = false;
+  }, 2000);
 }
