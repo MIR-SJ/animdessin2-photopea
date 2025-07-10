@@ -3,7 +3,7 @@
     "plugins": [
       {
         "name": "AnimDessin2 Lite",
-        "url": "https://MIR-SJ.github.io/animdessin2-photopea/index.html"
+        "url": "https://mir-sj.github.io/animdessin2-photopea/index.html"
       }
     ]
   }
