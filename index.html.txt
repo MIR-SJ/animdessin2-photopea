@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AnimDessin2 Lite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h3>AnimDessin2 Mini Timeline</h3>
+
+  <div class="controls">
+    <button onclick="addFrame()">➕ Add Frame</button>
+    <button onclick="duplicateFrame()">📄 Duplicate</button>
+    <button onclick="applyOnionSkin()">🧅 Onion Skin</button>
+  </div>
+
+  <div id="timeline" class="timeline"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
