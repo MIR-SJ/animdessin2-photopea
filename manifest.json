@@ -1,0 +1,10 @@
+{
+  "environment": {
+    "plugins": [
+      {
+        "name": "AnimDessin2 Lite",
+        "url": "https://mir-sj.github.io/animdessin2-photopea/index.html"
+      }
+    ]
+  }
+}
