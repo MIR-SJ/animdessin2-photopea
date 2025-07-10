@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AnimDessin2 Lite</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnimDessin2 Lite - Photopea</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h3>AnimDessin2 Mini Timeline</h3>
-
-  <div class="controls">
-    <button onclick="addFrame()">➕ Add Frame</button>
-    <button onclick="duplicateFrame()">📄 Duplicate</button>
-    <button onclick="applyOnionSkin()">🧅 Onion Skin</button>
+  <div id="panel">
+    <h2>AnimDessin2 Lite (Photopea Edition)</h2>
+    <p>No timeline needed — manage frames as layers.</p>
+    <div class="button-row">
+      <button onclick="addFrame()">➕ Add Frame</button>
+      <button onclick="duplicateFrame()">📄 Duplicate Frame</button>
+      <button onclick="toggleOnionSkin()">👁 Onion Skin</button>
+    </div>
+    <div class="button-row">
+      <button onclick="prevFrame()">⬅ Prev</button>
+      <button onclick="nextFrame()">Next ➡</button>
+      <button onclick="playAnimation()">▶ Play</button>
+    </div>
   </div>
-
-  <div id="timeline" class="timeline"></div>
-
   <script src="script.js"></script>
 </body>
 </html>
